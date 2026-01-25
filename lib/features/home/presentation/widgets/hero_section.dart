@@ -108,10 +108,18 @@ class HeroSection extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const CircleAvatar(
-                  radius: 120, // Increased size for better visibility on web
-                  backgroundColor: Colors.white,
-                  backgroundImage: AssetImage('assets/images/myImage.png'),
+                child: Container(
+                  width: 240,
+                  height: 240,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/myImage.png'),
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
+                    ),
+                  ),
                 ),
               )
               .animate(delay: 800.ms)
