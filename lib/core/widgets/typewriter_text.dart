@@ -78,20 +78,21 @@ class _TypewriterTextState extends State<TypewriterText>
         final textToShow = widget.text.substring(0, _characterCount.value);
         final isFinished = _characterCount.value == widget.text.length;
 
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(textToShow, style: widget.style),
-            if (widget.showCursor && (_isCursorVisible || !isFinished))
-              Text(
-                '|',
-                style: widget.style?.copyWith(
-                  color: widget.style?.color?.withValues(alpha: 0.5),
-                  fontWeight: FontWeight.w100,
+        return Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(text: textToShow, style: widget.style),
+              if (widget.showCursor && (_isCursorVisible || !isFinished))
+                TextSpan(
+                  text: '|',
+                  style: widget.style?.copyWith(
+                    color: widget.style?.color?.withValues(alpha: 0.5),
+                    fontWeight: FontWeight.w100,
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
+          style: widget.style,
         );
       },
     );

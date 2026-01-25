@@ -20,66 +20,103 @@ class HeroSection extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 80.0, horizontal: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Wrap(
+        spacing: 60,
+        runSpacing: 40,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        alignment: WrapAlignment.start,
         children: [
-          Text(
-            'Hello, I\'m Habib Ullah Yeasin.',
-            style: textTheme.displayLarge,
-          ),
-          const SizedBox(height: 16),
-          TypewriterText(
-                text: 'Flutter Developer & EdTech Enthusiast',
-                duration: const Duration(milliseconds: 4500),
-                style: textTheme.displayMedium?.copyWith(
-                  color: theme.colorScheme.primary,
-                ),
-              )
-              .animate(delay: 200.ms)
-              .fadeIn(duration: 800.ms)
-              .slideY(begin: 0.2, end: 0, curve: Curves.easeOutExpo),
-          const SizedBox(height: 32),
           ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 800),
-                child: Text(
-                  "I combine technical expertise in Flutter with a deep understanding of educational technology. I build scalable apps using Clean Architecture and Riverpod.",
-                  style: textTheme.bodyLarge,
+            constraints: const BoxConstraints(maxWidth: 700),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Hello, I\'m Habib Ullah Yeasin.',
+                  style: textTheme.displayLarge,
+                ),
+                const SizedBox(height: 16),
+                TypewriterText(
+                      text: 'Flutter Developer &\nEdTech Enthusiast',
+                      duration: const Duration(milliseconds: 4500),
+                      style: textTheme.displayMedium?.copyWith(
+                        color: theme.colorScheme.primary,
+                      ),
+                    )
+                    .animate(delay: 200.ms)
+                    .fadeIn(duration: 800.ms)
+                    .slideY(begin: 0.2, end: 0, curve: Curves.easeOutExpo),
+                const SizedBox(height: 32),
+                ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: Text(
+                        "I combine technical expertise in Flutter with a deep understanding of educational technology. I build scalable apps using Clean Architecture and Riverpod.",
+                        style: textTheme.bodyLarge,
+                      ),
+                    )
+                    .animate(delay: 400.ms)
+                    .fadeIn(duration: 800.ms)
+                    .slideY(begin: 0.2, end: 0, curve: Curves.easeOutExpo),
+                const SizedBox(height: 48),
+                Wrap(
+                      spacing: 20,
+                      runSpacing: 20,
+                      children: [
+                        _buildSocialButton(
+                          context,
+                          'GitHub',
+                          Icons.code_rounded,
+                          () => _launchURL('https://github.com/Yeasin84'),
+                        ),
+                        _buildSocialButton(
+                          context,
+                          'LinkedIn',
+                          Icons.work_outline_rounded,
+                          () => _launchURL(
+                            'https://linkedin.com/in/habibullahyeasin',
+                          ),
+                        ),
+                        _buildSocialButton(
+                          context,
+                          'Resume',
+                          Icons.description_outlined,
+                          () => _launchURL(
+                            'https://yeasin84.github.io/my-resume/Habib_Ullah_Yeasin_Resume.pdf',
+                          ),
+                        ),
+                      ],
+                    )
+                    .animate(delay: 600.ms)
+                    .fadeIn(duration: 800.ms)
+                    .slideY(begin: 0.2, end: 0, curve: Curves.easeOutExpo),
+              ],
+            ),
+          ),
+          // Profile Image Section
+          Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: theme.colorScheme.primary,
+                    width: 4.0,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                      blurRadius: 20,
+                      spreadRadius: 5,
+                    ),
+                  ],
+                ),
+                child: const CircleAvatar(
+                  radius: 120, // Increased size for better visibility on web
+                  backgroundColor: Colors.white,
+                  backgroundImage: AssetImage('assets/images/myImage.png'),
                 ),
               )
-              .animate(delay: 400.ms)
+              .animate(delay: 800.ms)
               .fadeIn(duration: 800.ms)
-              .slideY(begin: 0.2, end: 0, curve: Curves.easeOutExpo),
-          const SizedBox(height: 48),
-          Wrap(
-                spacing: 20,
-                runSpacing: 20,
-                children: [
-                  _buildSocialButton(
-                    context,
-                    'GitHub',
-                    Icons.code_rounded,
-                    () => _launchURL('https://github.com/Yeasin84'),
-                  ),
-                  _buildSocialButton(
-                    context,
-                    'LinkedIn',
-                    Icons.work_outline_rounded,
-                    () =>
-                        _launchURL('https://linkedin.com/in/habibullahyeasin'),
-                  ),
-                  _buildSocialButton(
-                    context,
-                    'Resume',
-                    Icons.description_outlined,
-                    () => _launchURL(
-                      'https://yeasin84.github.io/my-resume/Habib_Ullah_Yeasin_Resume.pdf',
-                    ),
-                  ),
-                ],
-              )
-              .animate(delay: 600.ms)
-              .fadeIn(duration: 800.ms)
-              .slideY(begin: 0.2, end: 0, curve: Curves.easeOutExpo),
+              .scale(begin: const Offset(0.8, 0.8), curve: Curves.easeOutBack),
         ],
       ),
     );

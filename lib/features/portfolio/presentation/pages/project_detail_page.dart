@@ -9,9 +9,61 @@ class ProjectDetailPage extends ConsumerWidget {
 
   const ProjectDetailPage({super.key, required this.projectId});
 
+  // Data Map for Project Details
+  static final Map<String, _ProjectDetailData> _projectData = {
+    '1': _ProjectDetailData(
+      title: "Language Learning App",
+      category: "CASE STUDY: LMS & EDTECH",
+      challengeDescription:
+          "Learning a new language requires consistent practice, but many students in remote areas lack stable internet. The challenge was to create an app that could handle audio lessons and quiz logic entirely offline without consuming too much device storage.",
+      solutionDescription:
+          "I implemented a 'Smart Caching' strategy using Hive. Instead of streaming audio, lessons are downloaded in compressed batches. I also used Riverpod to manage the complex state of the quizzes, ensuring that user progress is saved locally and synced only when the internet returns.",
+      techStack: [
+        "Flutter",
+        "Riverpod",
+        "Hive DB",
+        "Clean Architecture",
+        "Audioplayers",
+      ],
+      icon: Icons.phone_iphone_rounded,
+      mockupText: "App Mockup Image Here\n(Add asset later)",
+    ),
+    '2': _ProjectDetailData(
+      title: "ArogyaPath",
+      category: "HEALTHCARE & TELEMEDICINE",
+      challengeDescription:
+          "The healthcare process in Bangladesh is often manual and fragmented, making it difficult for patients to find doctors and manage records efficiently.",
+      solutionDescription:
+          "A comprehensive Flutter app facilitating easy doctor appointment scheduling, secure medical record management, and offering real-time health news and emergency services to streamline healthcare access.",
+      techStack: ["Flutter", "Firebase", "Dart", "REST API", "Google Maps"],
+      icon: Icons.local_hospital_rounded,
+      mockupText: "AroggyaPath Screen\n(Add asset later)",
+    ),
+    '3': _ProjectDetailData(
+      title: "GetX Showcase",
+      category: "ARCHITECTURE & STATE MANAGEMENT",
+      challengeDescription:
+          "Many developers find it challenging to implement clean, scalable architecture with efficient state management in production applications.",
+      solutionDescription:
+          "A production-ready reference app demonstrating best practices with GetX for state management, navigation, and dependency injection, wrapped in a polished Material 3 UI.",
+      techStack: [
+        "Flutter",
+        "GetX",
+        "Material 3",
+        "Google Fonts",
+        "Clean Architecture",
+      ],
+      icon: Icons.layers_rounded,
+      mockupText: "GetX Clean Arch",
+      imageAsset: "assets/images/getXShowcase1.gif",
+    ),
+  };
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDesktop = MediaQuery.of(context).size.width > 900;
+    // Fallback to project '1' if id not found, or show empty/error
+    final data = _projectData[projectId] ?? _projectData['1']!;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -36,8 +88,8 @@ class ProjectDetailPage extends ConsumerWidget {
                 vertical: 120,
               ),
               child: isDesktop
-                  ? _buildDesktopLayout(context)
-                  : _buildMobileLayout(context),
+                  ? _buildDesktopLayout(context, data)
+                  : _buildMobileLayout(context, data),
             ),
           ),
         ),
@@ -45,29 +97,29 @@ class ProjectDetailPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildDesktopLayout(BuildContext context) {
+  Widget _buildDesktopLayout(BuildContext context, _ProjectDetailData data) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(flex: 5, child: _buildContent(context)),
+        Expanded(flex: 5, child: _buildContent(context, data)),
         const SizedBox(width: 80),
-        Expanded(flex: 4, child: _buildVisuals(context)),
+        Expanded(flex: 4, child: _buildVisuals(context, data)),
       ],
     );
   }
 
-  Widget _buildMobileLayout(BuildContext context) {
+  Widget _buildMobileLayout(BuildContext context, _ProjectDetailData data) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildVisuals(context),
+        _buildVisuals(context, data),
         const SizedBox(height: 60),
-        _buildContent(context),
+        _buildContent(context, data),
       ],
     );
   }
 
-  Widget _buildVisuals(BuildContext context) {
+  Widget _buildVisuals(BuildContext context, _ProjectDetailData data) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
@@ -92,14 +144,20 @@ class ProjectDetailPage extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.phone_iphone_rounded,
-                  size: 80,
-                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                ),
+                if (data.imageAsset != null)
+                  Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Image.asset(data.imageAsset!, fit: BoxFit.contain),
+                  )
+                else
+                  Icon(
+                    data.icon,
+                    size: 80,
+                    color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                  ),
                 const SizedBox(height: 20),
                 Text(
-                  "App Mockup Image Here\n(Add asset later)",
+                  data.mockupText,
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
@@ -113,7 +171,7 @@ class ProjectDetailPage extends ConsumerWidget {
     ).animate().scale(duration: 800.ms, curve: Curves.easeOutBack);
   }
 
-  Widget _buildContent(BuildContext context) {
+  Widget _buildContent(BuildContext context, _ProjectDetailData data) {
     final theme = Theme.of(context);
 
     return Column(
@@ -121,7 +179,7 @@ class ProjectDetailPage extends ConsumerWidget {
       children: [
         // 1. Header
         Text(
-          "Language Learning App",
+          data.title,
           style: theme.textTheme.displayMedium,
         ).animate().fadeIn().slideX(begin: -0.1),
         const SizedBox(height: 20),
@@ -132,7 +190,7 @@ class ProjectDetailPage extends ConsumerWidget {
             borderRadius: BorderRadius.circular(30),
           ),
           child: Text(
-            "CASE STUDY: LMS & EDTECH",
+            data.category,
             style: theme.textTheme.labelLarge?.copyWith(
               color: theme.colorScheme.primary,
               letterSpacing: 2,
@@ -145,7 +203,7 @@ class ProjectDetailPage extends ConsumerWidget {
         _buildSection(
           context,
           "The Challenge",
-          "Learning a new language requires consistent practice, but many students in remote areas lack stable internet. The challenge was to create an app that could handle audio lessons and quiz logic entirely offline without consuming too much device storage.",
+          data.challengeDescription,
           delay: 400,
         ),
 
@@ -155,7 +213,7 @@ class ProjectDetailPage extends ConsumerWidget {
         _buildSection(
           context,
           "The Solution",
-          "I implemented a 'Smart Caching' strategy using Hive. Instead of streaming audio, lessons are downloaded in compressed batches. I also used Riverpod to manage the complex state of the quizzes, ensuring that user progress is saved locally and synced only when the internet returns.",
+          data.solutionDescription,
           delay: 600,
         ),
 
@@ -170,13 +228,9 @@ class ProjectDetailPage extends ConsumerWidget {
         Wrap(
           spacing: 12,
           runSpacing: 12,
-          children: [
-            _techChip(context, "Flutter"),
-            _techChip(context, "Riverpod"),
-            _techChip(context, "Hive DB"),
-            _techChip(context, "Clean Architecture"),
-            _techChip(context, "Audioplayers"),
-          ],
+          children: data.techStack
+              .map((tech) => _techChip(context, tech))
+              .toList(),
         ).animate(delay: 900.ms).fadeIn().slideY(begin: 0.1),
       ],
     );
@@ -221,4 +275,26 @@ class ProjectDetailPage extends ConsumerWidget {
       ),
     );
   }
+}
+
+class _ProjectDetailData {
+  final String title;
+  final String category;
+  final String challengeDescription;
+  final String solutionDescription;
+  final List<String> techStack;
+  final IconData icon;
+  final String mockupText;
+  final String? imageAsset;
+
+  const _ProjectDetailData({
+    required this.title,
+    required this.category,
+    required this.challengeDescription,
+    required this.solutionDescription,
+    required this.techStack,
+    required this.icon,
+    required this.mockupText,
+    this.imageAsset,
+  });
 }

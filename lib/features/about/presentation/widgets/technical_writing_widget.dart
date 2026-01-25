@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../pages/article_detail_screen.dart';
 
 class TechnicalWritingWidget extends StatelessWidget {
   const TechnicalWritingWidget({super.key});
@@ -117,18 +118,27 @@ class TechnicalWritingWidget extends StatelessWidget {
             "How my background in Educational Technology helps me write better logic for Learning Management Systems.",
         readTime: "4 min read",
         color: Colors.tealAccent,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ArticleDetailScreen(),
+            ),
+          );
+        },
       ),
     ];
   }
 }
 
-class _ArticleCard extends StatelessWidget {
+class _ArticleCard extends StatefulWidget {
   final int index;
   final String tag;
   final String title;
   final String summary;
   final String readTime;
   final Color color;
+  final VoidCallback? onTap;
 
   const _ArticleCard({
     required this.index,
@@ -137,7 +147,15 @@ class _ArticleCard extends StatelessWidget {
     required this.summary,
     required this.readTime,
     required this.color,
+    this.onTap,
   });
+
+  @override
+  State<_ArticleCard> createState() => _ArticleCardState();
+}
+
+class _ArticleCardState extends State<_ArticleCard> {
+  bool _isHovered = false;
 
   @override
   Widget build(BuildContext context) {
@@ -145,91 +163,117 @@ class _ArticleCard extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     final isDesktop = MediaQuery.of(context).size.width > 900;
 
-    Widget cardContent =
-        ClipRRect(
-              borderRadius: BorderRadius.circular(24),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: Container(
-                  padding: const EdgeInsets.all(32),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? Colors.white.withValues(alpha: 0.05)
-                        : Colors.black.withValues(alpha: 0.03),
-                    borderRadius: BorderRadius.circular(24),
-                    border: Border.all(
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.1)
-                          : Colors.black.withValues(alpha: 0.05),
+    Widget cardContent = MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child:
+          AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOutCubic,
+                transform: _isHovered
+                    ? (Matrix4.identity()
+                        ..translate(0.0, -8.0)
+                        ..scale(1.02, 1.02))
+                    : Matrix4.identity(),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(24),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? Colors.white.withValues(alpha: 0.05)
+                            : Colors.black.withValues(alpha: 0.03),
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
+                          color: isDark
+                              ? Colors.white.withValues(alpha: 0.1)
+                              : Colors.black.withValues(alpha: 0.05),
+                        ),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: widget.onTap,
+                          borderRadius: BorderRadius.circular(24),
+                          child: Padding(
+                            padding: const EdgeInsets.all(32),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Tag
+                                Text(
+                                  widget.tag,
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    color: widget.color,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 2.0,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+
+                                // Title
+                                Text(
+                                  widget.title,
+                                  style: theme.textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    height: 1.2,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+
+                                // Summary
+                                Text(
+                                  widget.summary,
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: theme.colorScheme.onSurface
+                                        .withValues(alpha: 0.6),
+                                    height: 1.6,
+                                  ),
+                                ),
+                                const SizedBox(height: 32),
+
+                                // Footer
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.access_time_rounded,
+                                      size: 16,
+                                      color: theme.colorScheme.onSurface
+                                          .withValues(alpha: 0.3),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      widget.readTime,
+                                      style: theme.textTheme.bodySmall
+                                          ?.copyWith(
+                                            color: theme.colorScheme.onSurface
+                                                .withValues(alpha: 0.4),
+                                          ),
+                                    ),
+                                    const Spacer(),
+                                    Icon(
+                                      Icons.arrow_right_alt_rounded,
+                                      color: _isHovered
+                                          ? widget.color
+                                          : theme.colorScheme.onSurface
+                                                .withValues(alpha: 0.3),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Tag
-                      Text(
-                        tag,
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: color,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 2.0,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Title
-                      Text(
-                        title,
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          height: 1.2,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-
-                      // Summary
-                      Text(
-                        summary,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurface.withValues(
-                            alpha: 0.6,
-                          ),
-                          height: 1.6,
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-
-                      // Footer
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.access_time_rounded,
-                            size: 16,
-                            color: theme.colorScheme.onSurface.withValues(
-                              alpha: 0.3,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            readTime,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(
-                                alpha: 0.4,
-                              ),
-                            ),
-                          ),
-                          const Spacer(),
-                          Icon(Icons.arrow_right_alt_rounded, color: color),
-                        ],
-                      ),
-                    ],
-                  ),
                 ),
-              ),
-            )
-            .animate(delay: (400 + (index * 150)).ms)
-            .fadeIn()
-            .slideY(begin: 0.1, curve: Curves.easeOutBack);
+              )
+              .animate(delay: (400 + (widget.index * 150)).ms)
+              .fadeIn()
+              .slideY(begin: 0.1, curve: Curves.easeOutBack),
+    );
 
     return isDesktop ? Expanded(child: cardContent) : cardContent;
   }

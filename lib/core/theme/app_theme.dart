@@ -102,10 +102,35 @@ class AppTheme {
         fontWeight: FontWeight.bold,
         letterSpacing: -0.5,
       ),
+      headlineLarge: GoogleFonts.plusJakartaSans(
+        color: mainColor,
+        fontSize: 32,
+        fontWeight: FontWeight.bold,
+      ),
       headlineMedium: GoogleFonts.plusJakartaSans(
         color: mainColor,
         fontSize: 24,
         fontWeight: FontWeight.w700,
+      ),
+      headlineSmall: GoogleFonts.plusJakartaSans(
+        color: mainColor,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),
+      titleLarge: GoogleFonts.plusJakartaSans(
+        color: mainColor,
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+      ),
+      titleMedium: GoogleFonts.plusJakartaSans(
+        color: mainColor,
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+      ),
+      titleSmall: GoogleFonts.plusJakartaSans(
+        color: mainColor,
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
       ),
       bodyLarge: GoogleFonts.plusJakartaSans(
         color: subColor,
@@ -117,11 +142,27 @@ class AppTheme {
         fontSize: 16,
         height: 1.6,
       ),
+      bodySmall: GoogleFonts.plusJakartaSans(
+        color: subColor,
+        fontSize: 12,
+        height: 1.4,
+      ),
       labelLarge: GoogleFonts.plusJakartaSans(
         color: mainColor,
         fontSize: 14,
         fontWeight: FontWeight.w600,
         letterSpacing: 1,
+      ),
+      labelMedium: GoogleFonts.plusJakartaSans(
+        color: subColor,
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+      ),
+      labelSmall: GoogleFonts.plusJakartaSans(
+        color: subColor,
+        fontSize: 10,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 1.2,
       ),
     );
   }
