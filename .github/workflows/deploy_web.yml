@@ -2,7 +2,7 @@ name: Deploy Flutter Portfolio
 
 on:
   push:
-    branches: [ "main" ] # Assumes your default branch is 'main'
+    branches: [ "main" ] # for branch name 'main'
 
 permissions:
   contents: write
@@ -24,7 +24,7 @@ jobs:
         run: flutter pub get
 
       # --- CRITICAL STEP: Build for Web ---
-      # We must set --base-href because your site is at /myPortfolio/, not the root domain.
+      # We must set --base-href because the site is at /myPortfolio/, not the root domain.
       - name: Build Web App
         run: flutter build web --release --base-href "/myPortfolio/"
 
