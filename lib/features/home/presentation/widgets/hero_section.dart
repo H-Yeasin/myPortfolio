@@ -1,6 +1,10 @@
+import 'dart:math' as math;
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../../../core/widgets/typewriter_text.dart';
 
 class HeroSection extends StatelessWidget {
@@ -17,115 +21,275 @@ class HeroSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final width = MediaQuery.of(context).size.width;
+    final isDesktop = width >= 920;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 80.0, horizontal: 20.0),
-      child: Wrap(
-        spacing: 60,
-        runSpacing: 40,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        alignment: WrapAlignment.start,
-        children: [
-          ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 700),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Hello, I\'m Habib Ullah Yeasin.',
-                  style: textTheme.displayLarge,
+    final intro = Column(
+      crossAxisAlignment: isDesktop
+          ? CrossAxisAlignment.start
+          : CrossAxisAlignment.center,
+      children: [
+        _buildPill(context, 'AVAILABLE FOR FLUTTER + EDTECH WORK')
+            .animate()
+            .fadeIn(duration: 650.ms)
+            .slideY(begin: 0.2, curve: Curves.easeOutExpo),
+        const SizedBox(height: 24),
+        Text(
+          'Habib Ullah Yeasin',
+          textAlign: isDesktop ? TextAlign.start : TextAlign.center,
+          style: textTheme.displayLarge?.copyWith(
+            fontSize: isDesktop ? 70 : 42,
+            height: 1.02,
+            color: theme.colorScheme.onSurface,
+          ),
+        ),
+        const SizedBox(height: 16),
+        ShaderMask(
+              shaderCallback: (bounds) => LinearGradient(
+                colors: [
+                  theme.colorScheme.primary,
+                  theme.colorScheme.secondary,
+                  const Color(0xFFFFD6A5),
+                ],
+              ).createShader(bounds),
+              child: TypewriterText(
+                text: 'Flutter Developer\nEdTech Product Thinker',
+                duration: const Duration(milliseconds: 4200),
+                style: textTheme.displayMedium?.copyWith(
+                  fontSize: isDesktop ? 44 : 30,
+                  color: Colors.white,
                 ),
-                const SizedBox(height: 16),
-                TypewriterText(
-                      text: 'Flutter Developer &\nEdTech Enthusiast',
-                      duration: const Duration(milliseconds: 4500),
-                      style: textTheme.displayMedium?.copyWith(
-                        color: theme.colorScheme.primary,
-                      ),
-                    )
-                    .animate(delay: 200.ms)
-                    .fadeIn(duration: 800.ms)
-                    .slideY(begin: 0.2, end: 0, curve: Curves.easeOutExpo),
-                const SizedBox(height: 32),
-                ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 800),
-                      child: Text(
-                        "I combine technical expertise in Flutter with a deep understanding of educational technology. I build scalable apps using Clean Architecture and Riverpod.",
-                        style: textTheme.bodyLarge,
-                      ),
-                    )
-                    .animate(delay: 400.ms)
-                    .fadeIn(duration: 800.ms)
-                    .slideY(begin: 0.2, end: 0, curve: Curves.easeOutExpo),
-                const SizedBox(height: 48),
-                Wrap(
-                      spacing: 20,
-                      runSpacing: 20,
-                      children: [
-                        _buildSocialButton(
-                          context,
-                          'GitHub',
-                          Icons.code_rounded,
-                          () => _launchURL('https://github.com/Yeasin84'),
-                        ),
-                        _buildSocialButton(
-                          context,
-                          'LinkedIn',
-                          Icons.work_outline_rounded,
-                          () => _launchURL(
-                            'https://linkedin.com/in/habibullahyeasin',
-                          ),
-                        ),
-                        _buildSocialButton(
-                          context,
-                          'Resume',
-                          Icons.description_outlined,
-                          () => _launchURL(
-                            'https://yeasin84.github.io/my-resume/Habib_Ullah_Yeasin_Resume.pdf',
-                          ),
-                        ),
-                      ],
-                    )
-                    .animate(delay: 600.ms)
-                    .fadeIn(duration: 800.ms)
-                    .slideY(begin: 0.2, end: 0, curve: Curves.easeOutExpo),
-              ],
+              ),
+            )
+            .animate(delay: 160.ms)
+            .fadeIn(duration: 800.ms)
+            .slideY(begin: 0.16, curve: Curves.easeOutExpo),
+        const SizedBox(height: 26),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 720),
+          child: Text(
+            'I design polished Flutter experiences with clean architecture, useful motion, and learning-first UX decisions.',
+            textAlign: isDesktop ? TextAlign.start : TextAlign.center,
+            style: textTheme.bodyLarge?.copyWith(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.72),
             ),
           ),
-          // Profile Image Section
-          Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: theme.colorScheme.primary,
-                    width: 4.0,
+        ),
+        const SizedBox(height: 34),
+        Wrap(
+              spacing: 14,
+              runSpacing: 14,
+              alignment: isDesktop ? WrapAlignment.start : WrapAlignment.center,
+              children: [
+                _buildSocialButton(
+                  context,
+                  'GitHub',
+                  Icons.code_rounded,
+                  () => _launchURL('https://github.com/H-Yeasin'),
+                  filled: true,
+                ),
+                _buildSocialButton(
+                  context,
+                  'LinkedIn',
+                  Icons.work_outline_rounded,
+                  () => _launchURL('https://linkedin.com/in/habibullahyeasin'),
+                ),
+                _buildSocialButton(
+                  context,
+                  'Resume',
+                  Icons.description_outlined,
+                  () => _launchURL(
+                    'https://yeasin84.github.io/my-resume/Habib_Ullah_Yeasin_Resume.pdf',
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.2),
-                      blurRadius: 20,
-                      spreadRadius: 5,
+                ),
+              ],
+            )
+            .animate(delay: 430.ms)
+            .fadeIn(duration: 800.ms)
+            .slideY(begin: 0.16, curve: Curves.easeOutExpo),
+      ],
+    );
+
+    final profile = Align(
+      alignment: Alignment.center,
+      child: _buildProfileGlass(context)
+          .animate(delay: 520.ms)
+          .fadeIn(duration: 850.ms)
+          .scale(begin: const Offset(0.92, 0.92), curve: Curves.easeOutBack),
+    );
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(20, isDesktop ? 90 : 56, 20, 72),
+      child: isDesktop
+          ? Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(flex: 6, child: intro),
+                const SizedBox(width: 56),
+                Expanded(flex: 4, child: profile),
+              ],
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [intro, const SizedBox(height: 46), profile],
+            ),
+    );
+  }
+
+  Widget _buildPill(BuildContext context, String text) {
+    final theme = Theme.of(context);
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(99),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(99),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.16)),
+          ),
+          child: Text(
+            text,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.secondary,
+              fontWeight: FontWeight.w900,
+              fontSize: 11,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProfileGlass(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    return Transform(
+      alignment: Alignment.center,
+      transform: Matrix4.identity()
+        ..setEntry(3, 2, 0.001)
+        ..rotateY(-0.09)
+        ..rotateX(0.05),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(34),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+          child: Container(
+            width: 360,
+            constraints: const BoxConstraints(maxWidth: 360),
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.075)
+                  : Colors.white.withValues(alpha: 0.62),
+              borderRadius: BorderRadius.circular(34),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.18)),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.18),
+                  blurRadius: 40,
+                  offset: const Offset(0, 24),
+                ),
+              ],
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  right: 10,
+                  top: 6,
+                  child: Transform.rotate(
+                    angle: math.pi / 4,
+                    child: Container(
+                      width: 54,
+                      height: 54,
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.secondary.withValues(
+                          alpha: 0.16,
+                        ),
+                        border: Border.all(
+                          color: theme.colorScheme.secondary.withValues(
+                            alpha: 0.34,
+                          ),
+                        ),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                  ),
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 220,
+                      height: 220,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(28),
+                        image: const DecorationImage(
+                          image: AssetImage('assets/images/myImage.png'),
+                          fit: BoxFit.cover,
+                          alignment: Alignment.topCenter,
+                        ),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.34),
+                          width: 1.4,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                    Row(
+                      children: [
+                        _buildMetric(context, '3+', 'Apps'),
+                        const SizedBox(width: 12),
+                        _buildMetric(context, 'Clean', 'Architecture'),
+                        const SizedBox(width: 12),
+                        _buildMetric(context, 'UX', 'EdTech'),
+                      ],
                     ),
                   ],
                 ),
-                child: Container(
-                  width: 240,
-                  height: 240,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/myImage.png'),
-                      fit: BoxFit.cover,
-                      alignment: Alignment.topCenter,
-                    ),
-                  ),
-                ),
-              )
-              .animate(delay: 800.ms)
-              .fadeIn(duration: 800.ms)
-              .scale(begin: const Offset(0.8, 0.8), curve: Curves.easeOutBack),
-        ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMetric(BuildContext context, String value, String label) {
+    final theme = Theme.of(context);
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+        ),
+        child: Column(
+          children: [
+            Text(
+              value,
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.onSurface,
+                fontWeight: FontWeight.w900,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.56),
+                fontSize: 11,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -134,27 +298,27 @@ class HeroSection extends StatelessWidget {
     BuildContext context,
     String label,
     IconData icon,
-    VoidCallback onPressed,
-  ) {
+    VoidCallback onPressed, {
+    bool filled = false,
+  }) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     return ElevatedButton.icon(
       onPressed: onPressed,
-      icon: Icon(icon, size: 20),
+      icon: Icon(icon, size: 19),
       label: Text(label),
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-        backgroundColor: isDark
-            ? Colors.white.withValues(alpha: 0.05)
-            : Colors.black.withValues(alpha: 0.05),
-        foregroundColor: theme.colorScheme.onSurface,
-        elevation: 0,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+        backgroundColor: filled
+            ? theme.colorScheme.primary
+            : Colors.white.withValues(alpha: 0.075),
+        foregroundColor: filled ? const Color(0xFF080A12) : Colors.white,
         side: BorderSide(
-          color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
-          width: 1,
+          color: filled
+              ? Colors.transparent
+              : Colors.white.withValues(alpha: 0.14),
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       ),
     );
   }

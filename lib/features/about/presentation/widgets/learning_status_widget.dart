@@ -23,7 +23,7 @@ class LearningStatusWidget extends StatelessWidget {
                 "Growth Check",
                 style: theme.textTheme.labelLarge?.copyWith(
                   color: theme.colorScheme.primary,
-                  letterSpacing: 4,
+                  letterSpacing: 0,
                   fontWeight: FontWeight.w900,
                 ),
               ).animate().fadeIn().slideX(begin: -0.2),
@@ -155,7 +155,7 @@ class _StatusCard extends StatelessWidget {
                       style: theme.textTheme.labelSmall?.copyWith(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 1.5,
+                        letterSpacing: 0,
                         color: theme.colorScheme.onSurface.withValues(
                           alpha: 0.4,
                         ),

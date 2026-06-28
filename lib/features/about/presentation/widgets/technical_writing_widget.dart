@@ -31,7 +31,7 @@ class TechnicalWritingWidget extends StatelessWidget {
                         "TECHNICAL WRITING",
                         style: theme.textTheme.labelLarge?.copyWith(
                           color: theme.colorScheme.primary,
-                          letterSpacing: 4,
+                          letterSpacing: 0,
                           fontWeight: FontWeight.w900,
                         ),
                       ).animate().fadeIn().slideX(begin: -0.2),
@@ -207,7 +207,7 @@ class _ArticleCardState extends State<_ArticleCard> {
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     color: widget.color,
                                     fontWeight: FontWeight.w900,
-                                    letterSpacing: 2.0,
+                                    letterSpacing: 0,
                                   ),
                                 ),
                                 const SizedBox(height: 16),

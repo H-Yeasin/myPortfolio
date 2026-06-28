@@ -135,7 +135,7 @@ class _PhilosophyCard extends StatelessWidget {
                 title,
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  letterSpacing: -0.5,
+                  letterSpacing: 0,
                 ),
               ),
               const SizedBox(height: 12),

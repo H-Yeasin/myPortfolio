@@ -2,21 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Modern Color Palette (2026 Style)
-  // Dark Mode: Deep Void with Neon Accents
-  static const Color _darkBackground = Color(0xFF070708);
-  static const Color _darkSurface = Color(0xFF121216);
-  static const Color _darkPrimary = Color(0xFF8B5CF6); // Rich Violet
-  static const Color _darkSecondary = Color(0xFF10B981); // Emerald
+  static const Color _darkBackground = Color(0xFF080A12);
+  static const Color _darkSurface = Color(0xFF101522);
+  static const Color _darkPrimary = Color(0xFFA7B8FF);
+  static const Color _darkSecondary = Color(0xFF7EE7D1);
   static const Color _darkTextMain = Color(0xFFF9FAFB);
-  static const Color _darkTextSub = Color(0xFF9CA3AF);
+  static const Color _darkTextSub = Color(0xFFB9C2D3);
 
-  static const Color _lightBackground = Color(0xFFF3F4F6);
+  static const Color _lightBackground = Color(0xFFF7F4EF);
   static const Color _lightSurface = Color(0xFFFFFFFF);
-  static const Color _lightPrimary = Color(0xFF7C3AED); // Deep Violet
-  static const Color _lightSecondary = Color(0xFF059669);
+  static const Color _lightPrimary = Color(0xFF6E7BFF);
+  static const Color _lightSecondary = Color(0xFF12A996);
   static const Color _lightTextMain = Color(0xFF111827);
-  static const Color _lightTextSub = Color(0xFF4B5563);
+  static const Color _lightTextSub = Color(0xFF566173);
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -44,7 +42,13 @@ class AppTheme {
       cardTheme: CardThemeData(
         color: _lightSurface,
         elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          textStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800),
+        ),
       ),
     );
   }
@@ -75,7 +79,13 @@ class AppTheme {
       cardTheme: CardThemeData(
         color: _darkSurface,
         elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          textStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800),
+        ),
       ),
     );
   }
@@ -86,21 +96,21 @@ class AppTheme {
         color: mainColor,
         fontSize: 64,
         fontWeight: FontWeight.w800,
-        letterSpacing: -2,
+        letterSpacing: 0,
         height: 1.1,
       ),
       displayMedium: GoogleFonts.plusJakartaSans(
         color: mainColor,
         fontSize: 44,
         fontWeight: FontWeight.w800,
-        letterSpacing: -1,
+        letterSpacing: 0,
         height: 1.2,
       ),
       displaySmall: GoogleFonts.plusJakartaSans(
         color: mainColor,
         fontSize: 32,
         fontWeight: FontWeight.bold,
-        letterSpacing: -0.5,
+        letterSpacing: 0,
       ),
       headlineLarge: GoogleFonts.plusJakartaSans(
         color: mainColor,
@@ -151,7 +161,7 @@ class AppTheme {
         color: mainColor,
         fontSize: 14,
         fontWeight: FontWeight.w600,
-        letterSpacing: 1,
+        letterSpacing: 0,
       ),
       labelMedium: GoogleFonts.plusJakartaSans(
         color: subColor,
@@ -162,7 +172,7 @@ class AppTheme {
         color: subColor,
         fontSize: 10,
         fontWeight: FontWeight.w500,
-        letterSpacing: 1.2,
+        letterSpacing: 0,
       ),
     );
   }

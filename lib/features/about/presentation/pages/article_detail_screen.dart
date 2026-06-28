@@ -137,7 +137,7 @@ class ArticleDetailScreen extends StatelessWidget {
             "CAREER & PHILOSOPHY",
             style: theme.textTheme.labelLarge?.copyWith(
               color: Colors.tealAccent,
-              letterSpacing: 2,
+              letterSpacing: 0,
               fontWeight: FontWeight.bold,
             ),
           ),

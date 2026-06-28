@@ -21,6 +21,12 @@ class _ProjectCardState extends State<ProjectCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final accentColors = [
+      theme.colorScheme.primary,
+      theme.colorScheme.secondary,
+      const Color(0xFFFFD6A5),
+    ];
+    final accent = accentColors[widget.index % accentColors.length];
 
     return GestureDetector(
           onTap: () {
@@ -40,86 +46,123 @@ class _ProjectCardState extends State<ProjectCard> {
               curve: Curves.easeOutCubic,
               transform: _isHovered
                   ? (Matrix4.identity()
-                      ..translate(0.0, -8.0)
-                      ..scale(1.02, 1.02))
+                      ..setEntry(3, 2, 0.001)
+                      ..translate(0.0, -12.0, 18.0)
+                      ..rotateX(0.035)
+                      ..rotateY(-0.045)
+                      ..scale(1.025, 1.025))
                   : Matrix4.identity(),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(28),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
                   child: Container(
                     padding: const EdgeInsets.all(32.0),
                     decoration: BoxDecoration(
                       color: isDark
-                          ? Colors.white.withValues(alpha: 0.05)
-                          : Colors.black.withValues(alpha: 0.03),
-                      borderRadius: BorderRadius.circular(24),
+                          ? Colors.white.withValues(alpha: 0.075)
+                          : Colors.white.withValues(alpha: 0.64),
+                      borderRadius: BorderRadius.circular(28),
                       border: Border.all(
-                        color: isDark
-                            ? Colors.white.withValues(alpha: 0.1)
-                            : Colors.black.withValues(alpha: 0.05),
+                        color: _isHovered
+                            ? accent.withValues(alpha: 0.54)
+                            : Colors.white.withValues(alpha: 0.16),
                         width: 1,
                       ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.primary.withValues(
-                                  alpha: 0.1,
-                                ),
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              child: Text(
-                                '0${widget.index + 1}',
-                                style: theme.textTheme.labelLarge?.copyWith(
-                                  color: theme.colorScheme.primary,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                            ),
-                            Icon(
-                              Icons.north_east_rounded,
-                              color: _isHovered
-                                  ? theme.colorScheme.primary
-                                  : theme.colorScheme.onSurface.withValues(
-                                      alpha: 0.3,
-                                    ),
-                              size: 28,
-                            ),
-                          ],
+                      boxShadow: [
+                        BoxShadow(
+                          color: accent.withValues(alpha: _isHovered ? 0.22 : 0.1),
+                          blurRadius: _isHovered ? 34 : 22,
+                          offset: const Offset(0, 20),
                         ),
-                        const Spacer(),
-                        Text(
-                          widget.project.title,
-                          style: theme.textTheme.displaySmall?.copyWith(
-                            fontSize: 28,
-                            height: 1.1,
+                      ],
+                    ),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          right: -18,
+                          top: -18,
+                          child: Transform.rotate(
+                            angle: 0.75,
+                            child: Container(
+                              width: 86,
+                              height: 86,
+                              decoration: BoxDecoration(
+                                color: accent.withValues(alpha: 0.11),
+                                borderRadius: BorderRadius.circular(22),
+                                border: Border.all(
+                                  color: accent.withValues(alpha: 0.18),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 12),
-                        Text(
-                          widget.project.description,
-                          style: theme.textTheme.bodyMedium,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 24),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: widget.project.tags
-                              .take(3)
-                              .map((tag) => _buildTag(context, tag))
-                              .toList(),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: accent.withValues(alpha: 0.14),
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(
+                                      color: accent.withValues(alpha: 0.2),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    '0${widget.index + 1}',
+                                    style: theme.textTheme.labelLarge?.copyWith(
+                                      color: accent,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.north_east_rounded,
+                                  color: _isHovered
+                                      ? accent
+                                      : theme.colorScheme.onSurface.withValues(
+                                          alpha: 0.34,
+                                        ),
+                                  size: 28,
+                                ),
+                              ],
+                            ),
+                            const Spacer(),
+                            Text(
+                              widget.project.title,
+                              style: theme.textTheme.displaySmall?.copyWith(
+                                fontSize: 28,
+                                height: 1.1,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              widget.project.description,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.onSurface.withValues(
+                                  alpha: 0.68,
+                                ),
+                              ),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 24),
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: widget.project.tags
+                                  .take(3)
+                                  .map((tag) => _buildTag(context, tag))
+                                  .toList(),
+                            ),
+                          ],
                         ),
                       ],
                     ),

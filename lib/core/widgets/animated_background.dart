@@ -50,27 +50,105 @@ class _GradientPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Orbs of color that move around
-    final Paint paint = Paint()
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 150);
+    final rect = Offset.zero & size;
+    final basePaint = Paint()
+      ..shader = const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Color(0xFF090B14),
+          Color(0xFF141827),
+          Color(0xFF19131D),
+        ],
+      ).createShader(rect);
+    canvas.drawRect(rect, basePaint);
 
-    // Primary Orb
-    final p1X = size.width * (0.5 + 0.3 * sin(progress * 2 * pi));
-    final p1Y = size.height * (0.5 + 0.2 * cos(progress * 2 * pi));
-    paint.color = const Color(0xFF7F5AF0).withValues(alpha: 0.15);
-    canvas.drawCircle(Offset(p1X, p1Y), size.width * 0.4, paint);
+    _drawGrid(canvas, size);
+    _drawGeometry(
+      canvas,
+      center: Offset(
+        size.width * (0.18 + 0.03 * sin(progress * 2 * pi)),
+        size.height * 0.18,
+      ),
+      radius: size.shortestSide * 0.12,
+      sides: 6,
+      rotation: progress * 2 * pi,
+      color: const Color(0xFFA7B8FF),
+    );
+    _drawGeometry(
+      canvas,
+      center: Offset(
+        size.width * 0.82,
+        size.height * (0.28 + 0.04 * cos(progress * 2 * pi)),
+      ),
+      radius: size.shortestSide * 0.16,
+      sides: 4,
+      rotation: -progress * 1.5 * pi,
+      color: const Color(0xFF7EE7D1),
+    );
+    _drawGeometry(
+      canvas,
+      center: Offset(
+        size.width * (0.55 + 0.03 * cos(progress * 2 * pi)),
+        size.height * 0.78,
+      ),
+      radius: size.shortestSide * 0.18,
+      sides: 3,
+      rotation: progress * pi,
+      color: const Color(0xFFFFD6A5),
+    );
+  }
 
-    // Secondary Orb
-    final p2X = size.width * (0.3 + 0.4 * cos(progress * 2 * pi + 1));
-    final p2Y = size.height * (0.7 + 0.3 * sin(progress * 2 * pi + 1));
-    paint.color = const Color(0xFF2CB67D).withValues(alpha: 0.1);
-    canvas.drawCircle(Offset(p2X, p2Y), size.width * 0.35, paint);
+  void _drawGrid(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.035)
+      ..strokeWidth = 1;
+    const gap = 56.0;
 
-    // Tertiary Orb
-    final p3X = size.width * (0.8 + 0.2 * sin(progress * 2 * pi + 2));
-    final p3Y = size.height * (0.2 + 0.4 * cos(progress * 2 * pi + 2));
-    paint.color = const Color(0xFF6246EA).withValues(alpha: 0.12);
-    canvas.drawCircle(Offset(p3X, p3Y), size.width * 0.3, paint);
+    for (double x = 0; x < size.width; x += gap) {
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
+    }
+    for (double y = 0; y < size.height; y += gap) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
+    }
+  }
+
+  void _drawGeometry(
+    Canvas canvas, {
+    required Offset center,
+    required double radius,
+    required int sides,
+    required double rotation,
+    required Color color,
+  }) {
+    final path = Path();
+    for (int i = 0; i < sides; i++) {
+      final angle = rotation + (2 * pi * i / sides);
+      final point = Offset(
+        center.dx + cos(angle) * radius,
+        center.dy + sin(angle) * radius,
+      );
+      if (i == 0) {
+        path.moveTo(point.dx, point.dy);
+      } else {
+        path.lineTo(point.dx, point.dy);
+      }
+    }
+    path.close();
+
+    canvas.drawPath(
+      path,
+      Paint()
+        ..style = PaintingStyle.fill
+        ..color = color.withValues(alpha: 0.055),
+    );
+    canvas.drawPath(
+      path,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.4
+        ..color = color.withValues(alpha: 0.22),
+    );
   }
 
   @override

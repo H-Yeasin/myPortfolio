@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/providers/theme_provider.dart';
@@ -22,12 +24,25 @@ class HomePage extends ConsumerWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        scrolledUnderElevation: 0,
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+            child: Container(
+              color: (isDark ? Colors.black : Colors.white).withValues(
+                alpha: isDark ? 0.18 : 0.1,
+              ),
+            ),
+          ),
+        ),
         title: Padding(
           padding: const EdgeInsets.only(left: 20),
           child: Text(
             'H. U. Yeasin',
             style: theme.textTheme.displaySmall?.copyWith(
-              fontSize: 32,
+              fontSize: 26,
               color: theme.colorScheme.primary,
             ),
           ),
@@ -62,7 +77,7 @@ class HomePage extends ConsumerWidget {
                       'SELECTED PROJECTS',
                       style: theme.textTheme.labelLarge?.copyWith(
                         color: theme.colorScheme.primary,
-                        letterSpacing: 4,
+                        letterSpacing: 0,
                         fontWeight: FontWeight.w900,
                       ),
                     ),

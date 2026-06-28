@@ -193,7 +193,7 @@ class ProjectDetailPage extends ConsumerWidget {
             data.category,
             style: theme.textTheme.labelLarge?.copyWith(
               color: theme.colorScheme.primary,
-              letterSpacing: 2,
+              letterSpacing: 0,
             ),
           ),
         ).animate(delay: 200.ms).fadeIn(),
