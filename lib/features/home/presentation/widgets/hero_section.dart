@@ -101,7 +101,7 @@ class HeroSection extends StatelessWidget {
                   'Resume',
                   Icons.description_outlined,
                   () => _launchURL(
-                    'https://yeasin84.github.io/my-resume/Habib_Ullah_Yeasin_Resume.pdf',
+                    'https://h-yeasin.github.io/my-resume/Habib_Ullah_Yeasin_Resume.pdf',
                   ),
                 ),
               ],
@@ -211,7 +211,7 @@ class HeroSection extends StatelessWidget {
                         ),
                         border: Border.all(
                           color: theme.colorScheme.secondary.withValues(
-                          alpha: 0.34,
+                            alpha: 0.34,
                           ),
                         ),
                         borderRadius: BorderRadius.circular(14),
@@ -319,9 +319,7 @@ class HeroSection extends StatelessWidget {
             ? theme.colorScheme.onPrimary
             : theme.colorScheme.onSurface,
         side: BorderSide(
-          color: filled
-              ? Colors.transparent
-              : appColors.softBorder,
+          color: filled ? Colors.transparent : appColors.softBorder,
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       ),
