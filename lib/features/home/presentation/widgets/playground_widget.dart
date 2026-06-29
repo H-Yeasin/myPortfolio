@@ -6,6 +6,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
+import '../../../../core/theme/app_theme.dart';
+
 final wisdomStatusProvider = StateProvider<String>(
   (ref) => "Click 'Run Code' to fetch a dev insight...",
 );
@@ -27,7 +29,6 @@ class PlaygroundWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
     final wisdom = ref.watch(wisdomStatusProvider);
     final isLoading = ref.watch(isLoadingProvider);
     final isDesktop = MediaQuery.of(context).size.width > 900;
@@ -69,7 +70,6 @@ class PlaygroundWidget extends ConsumerWidget {
                   .slide(begin: const Offset(0, 0.1)),
               const SizedBox(height: 48),
               _TerminalCard(
-                    isDark: isDark,
                     isLoading: isLoading,
                     wisdom: wisdom,
                   )
@@ -100,7 +100,7 @@ class PlaygroundWidget extends ConsumerWidget {
                 label: const Text('Run Code'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: theme.colorScheme.primary,
-                  foregroundColor: const Color(0xFF080A12),
+                  foregroundColor: theme.colorScheme.onPrimary,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 36,
                     vertical: 20,
@@ -123,12 +123,10 @@ class PlaygroundWidget extends ConsumerWidget {
 }
 
 class _TerminalCard extends StatelessWidget {
-  final bool isDark;
   final bool isLoading;
   final String wisdom;
 
   const _TerminalCard({
-    required this.isDark,
     required this.isLoading,
     required this.wisdom,
   });
@@ -136,6 +134,7 @@ class _TerminalCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final appColors = theme.appColors;
 
     return Transform(
       alignment: Alignment.center,
@@ -150,11 +149,9 @@ class _TerminalCard extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(28),
             decoration: BoxDecoration(
-              color: isDark
-                  ? Colors.black.withValues(alpha: 0.48)
-                  : Colors.white.withValues(alpha: 0.58),
+              color: appColors.glassSurfaceStrong,
               borderRadius: BorderRadius.circular(28),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.16)),
+              border: Border.all(color: appColors.softBorder),
               boxShadow: [
                 BoxShadow(
                   color: theme.colorScheme.secondary.withValues(alpha: 0.14),
@@ -184,9 +181,9 @@ class _TerminalCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 24),
-                  child: Divider(color: Colors.white12, height: 1),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Divider(color: appColors.softBorder, height: 1),
                 ),
                 SizedBox(
                   height: 140,
@@ -197,9 +194,7 @@ class _TerminalCard extends StatelessWidget {
                             children: [
                               CircularProgressIndicator(
                                 strokeWidth: 3,
-                                color: isDark
-                                    ? const Color(0xFF7EE7D1)
-                                    : theme.colorScheme.primary,
+                                color: theme.colorScheme.secondary,
                               ),
                               const SizedBox(height: 20),
                               Text(
@@ -221,9 +216,7 @@ class _TerminalCard extends StatelessWidget {
                         : Text(
                             '> $wisdom',
                             style: TextStyle(
-                              color: isDark
-                                  ? const Color(0xFF7EE7D1)
-                                  : theme.colorScheme.primary,
+                              color: theme.colorScheme.secondary,
                               fontFamily: 'Courier',
                               fontSize: 18,
                               height: 1.5,

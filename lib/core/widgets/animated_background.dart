@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+import '../theme/app_theme.dart';
+
 class AnimatedBackground extends StatefulWidget {
   final Widget child;
 
@@ -31,11 +33,23 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
 
   @override
   Widget build(BuildContext context) {
+    final appColors = Theme.of(context).appColors;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
         return CustomPaint(
-          painter: _GradientPainter(_controller.value),
+          painter: _GradientPainter(
+            progress: _controller.value,
+            gradientColors: appColors.backgroundGradient,
+            gridColor: appColors.subtleGrid,
+            accentColors: [
+              colorScheme.primary,
+              colorScheme.secondary,
+              AppTheme.warmAccent,
+            ],
+          ),
           child: widget.child,
         );
       },
@@ -45,21 +59,25 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
 
 class _GradientPainter extends CustomPainter {
   final double progress;
+  final List<Color> gradientColors;
+  final Color gridColor;
+  final List<Color> accentColors;
 
-  _GradientPainter(this.progress);
+  _GradientPainter({
+    required this.progress,
+    required this.gradientColors,
+    required this.gridColor,
+    required this.accentColors,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
     final rect = Offset.zero & size;
     final basePaint = Paint()
-      ..shader = const LinearGradient(
+      ..shader = LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [
-          Color(0xFF090B14),
-          Color(0xFF141827),
-          Color(0xFF19131D),
-        ],
+        colors: gradientColors,
       ).createShader(rect);
     canvas.drawRect(rect, basePaint);
 
@@ -73,7 +91,7 @@ class _GradientPainter extends CustomPainter {
       radius: size.shortestSide * 0.12,
       sides: 6,
       rotation: progress * 2 * pi,
-      color: const Color(0xFFA7B8FF),
+      color: accentColors[0],
     );
     _drawGeometry(
       canvas,
@@ -84,7 +102,7 @@ class _GradientPainter extends CustomPainter {
       radius: size.shortestSide * 0.16,
       sides: 4,
       rotation: -progress * 1.5 * pi,
-      color: const Color(0xFF7EE7D1),
+      color: accentColors[1],
     );
     _drawGeometry(
       canvas,
@@ -95,13 +113,13 @@ class _GradientPainter extends CustomPainter {
       radius: size.shortestSide * 0.18,
       sides: 3,
       rotation: progress * pi,
-      color: const Color(0xFFFFD6A5),
+      color: accentColors[2],
     );
   }
 
   void _drawGrid(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.035)
+      ..color = gridColor
       ..strokeWidth = 1;
     const gap = 56.0;
 
@@ -152,6 +170,10 @@ class _GradientPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _GradientPainter oldDelegate) =>
-      oldDelegate.progress != progress;
+  bool shouldRepaint(covariant _GradientPainter oldDelegate) {
+    return oldDelegate.progress != progress ||
+        oldDelegate.gradientColors != gradientColors ||
+        oldDelegate.gridColor != gridColor ||
+        oldDelegate.accentColors != accentColors;
+  }
 }

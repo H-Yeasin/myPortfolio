@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/typewriter_text.dart';
 
 class HeroSection extends StatelessWidget {
@@ -20,6 +21,7 @@ class HeroSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final appColors = theme.appColors;
     final textTheme = theme.textTheme;
     final width = MediaQuery.of(context).size.width;
     final isDesktop = width >= 920;
@@ -49,7 +51,7 @@ class HeroSection extends StatelessWidget {
                 colors: [
                   theme.colorScheme.primary,
                   theme.colorScheme.secondary,
-                  const Color(0xFFFFD6A5),
+                  AppTheme.warmAccent,
                 ],
               ).createShader(bounds),
               child: TypewriterText(
@@ -138,6 +140,7 @@ class HeroSection extends StatelessWidget {
 
   Widget _buildPill(BuildContext context, String text) {
     final theme = Theme.of(context);
+    final appColors = theme.appColors;
     return ClipRRect(
       borderRadius: BorderRadius.circular(99),
       child: BackdropFilter(
@@ -145,9 +148,9 @@ class HeroSection extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.08),
+            color: appColors.glassSurface,
             borderRadius: BorderRadius.circular(99),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.16)),
+            border: Border.all(color: appColors.softBorder),
           ),
           child: Text(
             text,
@@ -164,7 +167,7 @@ class HeroSection extends StatelessWidget {
 
   Widget _buildProfileGlass(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final appColors = theme.appColors;
 
     return Transform(
       alignment: Alignment.center,
@@ -181,11 +184,9 @@ class HeroSection extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: 360),
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.075)
-                  : Colors.white.withValues(alpha: 0.62),
+              color: appColors.glassSurface,
               borderRadius: BorderRadius.circular(34),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.18)),
+              border: Border.all(color: appColors.softBorder),
               boxShadow: [
                 BoxShadow(
                   color: theme.colorScheme.primary.withValues(alpha: 0.18),
@@ -210,7 +211,7 @@ class HeroSection extends StatelessWidget {
                         ),
                         border: Border.all(
                           color: theme.colorScheme.secondary.withValues(
-                            alpha: 0.34,
+                          alpha: 0.34,
                           ),
                         ),
                         borderRadius: BorderRadius.circular(14),
@@ -259,13 +260,14 @@ class HeroSection extends StatelessWidget {
 
   Widget _buildMetric(BuildContext context, String value, String label) {
     final theme = Theme.of(context);
+    final appColors = theme.appColors;
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.08),
+          color: appColors.glassSurfaceStrong,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+          border: Border.all(color: appColors.softBorder),
         ),
         child: Column(
           children: [
@@ -302,6 +304,7 @@ class HeroSection extends StatelessWidget {
     bool filled = false,
   }) {
     final theme = Theme.of(context);
+    final appColors = theme.appColors;
 
     return ElevatedButton.icon(
       onPressed: onPressed,
@@ -311,12 +314,14 @@ class HeroSection extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
         backgroundColor: filled
             ? theme.colorScheme.primary
-            : Colors.white.withValues(alpha: 0.075),
-        foregroundColor: filled ? const Color(0xFF080A12) : Colors.white,
+            : appColors.glassSurfaceStrong,
+        foregroundColor: filled
+            ? theme.colorScheme.onPrimary
+            : theme.colorScheme.onSurface,
         side: BorderSide(
           color: filled
               ? Colors.transparent
-              : Colors.white.withValues(alpha: 0.14),
+              : appColors.softBorder,
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       ),

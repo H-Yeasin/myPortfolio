@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../domain/entities/project_entity.dart';
 import '../pages/project_detail_page.dart';
 
@@ -20,11 +21,11 @@ class _ProjectCardState extends State<ProjectCard> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final appColors = theme.appColors;
     final accentColors = [
       theme.colorScheme.primary,
       theme.colorScheme.secondary,
-      const Color(0xFFFFD6A5),
+      AppTheme.warmAccent,
     ];
     final accent = accentColors[widget.index % accentColors.length];
 
@@ -59,14 +60,12 @@ class _ProjectCardState extends State<ProjectCard> {
                   child: Container(
                     padding: const EdgeInsets.all(32.0),
                     decoration: BoxDecoration(
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.075)
-                          : Colors.white.withValues(alpha: 0.64),
+                      color: appColors.glassSurface,
                       borderRadius: BorderRadius.circular(28),
                       border: Border.all(
                         color: _isHovered
                             ? accent.withValues(alpha: 0.54)
-                            : Colors.white.withValues(alpha: 0.16),
+                            : appColors.softBorder,
                         width: 1,
                       ),
                       boxShadow: [
@@ -184,11 +183,13 @@ class _ProjectCardState extends State<ProjectCard> {
 
   Widget _buildTag(BuildContext context, String tag) {
     final theme = Theme.of(context);
+    final appColors = theme.appColors;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: theme.colorScheme.onSurface.withValues(alpha: 0.05),
+        color: appColors.glassSurfaceStrong,
         borderRadius: BorderRadius.circular(30),
+        border: Border.all(color: appColors.softBorder),
       ),
       child: Text(
         tag,

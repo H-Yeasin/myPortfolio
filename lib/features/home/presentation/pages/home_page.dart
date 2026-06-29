@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/providers/theme_provider.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/animated_background.dart';
 import '../../../../features/portfolio/presentation/providers/project_providers.dart';
 import '../../../../features/portfolio/presentation/widgets/project_card.dart';
@@ -18,6 +19,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final appColors = theme.appColors;
     final isDark = theme.brightness == Brightness.dark;
     final projectsAsync = ref.watch(projectsProvider);
 
@@ -31,9 +33,7 @@ class HomePage extends ConsumerWidget {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
             child: Container(
-              color: (isDark ? Colors.black : Colors.white).withValues(
-                alpha: isDark ? 0.18 : 0.1,
-              ),
+              color: appColors.appBarOverlay,
             ),
           ),
         ),

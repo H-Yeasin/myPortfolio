@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/animated_background.dart';
 
 class ProjectDetailPage extends ConsumerWidget {
@@ -121,40 +122,41 @@ class ProjectDetailPage extends ConsumerWidget {
 
   Widget _buildVisuals(BuildContext context, _ProjectDetailData data) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final appColors = theme.appColors;
 
     return Container(
       height: 600,
       decoration: BoxDecoration(
-        color: isDark
-            ? Colors.white.withValues(alpha: 0.05)
-            : Colors.black.withValues(alpha: 0.05),
+        color: appColors.glassSurface,
         borderRadius: BorderRadius.circular(40),
-        border: Border.all(
-          color: isDark
-              ? Colors.white.withValues(alpha: 0.1)
-              : Colors.black.withValues(alpha: 0.05),
-        ),
+        border: Border.all(color: appColors.softBorder),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(40),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (data.imageAsset != null)
-                  Padding(
-                    padding: const EdgeInsets.all(32.0),
-                    child: Image.asset(data.imageAsset!, fit: BoxFit.contain),
-                  )
-                else
-                  Icon(
-                    data.icon,
-                    size: 80,
-                    color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                Expanded(
+                  child: Center(
+                    child: data.imageAsset != null
+                        ? Image.asset(
+                            data.imageAsset!,
+                            width: double.infinity,
+                            height: double.infinity,
+                            fit: BoxFit.contain,
+                          )
+                        : Icon(
+                            data.icon,
+                            size: 80,
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: 0.3,
+                            ),
+                          ),
                   ),
+                ),
                 const SizedBox(height: 20),
                 Text(
                   data.mockupText,
